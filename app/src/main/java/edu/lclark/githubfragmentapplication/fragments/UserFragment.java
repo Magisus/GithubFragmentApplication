@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.lclark.githubfragmentapplication.R;
+import edu.lclark.githubfragmentapplication.UserAsyncTask;
 import edu.lclark.githubfragmentapplication.activities.MainActivity;
 import edu.lclark.githubfragmentapplication.models.GithubUser;
 
@@ -31,7 +32,6 @@ public class UserFragment extends Fragment {
     ImageView mImageView;
     @Bind(R.id.fragment_user_name_textview)
     TextView mNameTextView;
-
 
     public interface UserListener {
         void onUserFollowerButtonClicked(GithubUser user);

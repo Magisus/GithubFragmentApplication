@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.lclark.githubfragmentapplication.GithubRecyclerViewAdapter;
-import edu.lclark.githubfragmentapplication.NetworkAsyncTask;
+import edu.lclark.githubfragmentapplication.FollowersAsyncTask;
 import edu.lclark.githubfragmentapplication.R;
 import edu.lclark.githubfragmentapplication.activities.MainActivity;
 import edu.lclark.githubfragmentapplication.models.GithubUser;
@@ -24,7 +24,7 @@ import edu.lclark.githubfragmentapplication.models.GithubUser;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements NetworkAsyncTask.GithubListener,
+public class MainActivityFragment extends Fragment implements FollowersAsyncTask.GithubListener,
         GithubRecyclerViewAdapter.RowClickListener {
 
     public static final String ARG_USER = "MainActivityFragment.User";
@@ -32,13 +32,13 @@ public class MainActivityFragment extends Fragment implements NetworkAsyncTask.G
     @Bind(R.id.fragment_main_recyclerview)
     RecyclerView mRecyclerView;
 
-    NetworkAsyncTask mAsyncTask;
+    FollowersAsyncTask mAsyncTask;
     GithubRecyclerViewAdapter mAdapter;
 
     ArrayList<GithubUser> mFollowers;
     private FollowerSelectedListener mListener;
 
-    private String mUserLogin = "ntiller";
+    private String mUserLogin;
 
 
 
@@ -88,7 +88,7 @@ public class MainActivityFragment extends Fragment implements NetworkAsyncTask.G
         super.onStart();
 
         if (mAsyncTask == null && (mFollowers == null || mFollowers.isEmpty())) {
-            mAsyncTask = new NetworkAsyncTask(this);
+            mAsyncTask = new FollowersAsyncTask(this);
             mAsyncTask.execute(mUserLogin);
         }
     }

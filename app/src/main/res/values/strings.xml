@@ -6,4 +6,7 @@
     <string name="user_button_text">Followers</string>
 
     <string name="follower_list_title">%s\'s Followers</string>
+    <string name="login_edit_text_hint">Username</string>
+    <string name="login_button_text">Find user</string>
+    <string name="login_fragment_title">Find a user</string>
 </resources>
