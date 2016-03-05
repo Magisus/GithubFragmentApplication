@@ -1,5 +1,7 @@
 package edu.lclark.githubfragmentapplication.fragments;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +27,12 @@ public class SearchFragment extends Fragment implements UserAsyncTask.GithubUser
 
     @Override
     public void onGithubUserRetrieved(GithubUser user) {
+        if (user == null) {
+            loginButton.setEnabled(true);
+            Toast.makeText(getActivity(), getActivity().getString(R.string.user_not_found_error),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         ((MainActivity) getActivity()).showNewUser(user);
     }
 
@@ -56,8 +65,16 @@ public class SearchFragment extends Fragment implements UserAsyncTask.GithubUser
 
     @OnClick(R.id.login_button)
     public void onFindUserClick() {
-        new UserAsyncTask(this).execute(usernameInput.getText().toString());
-        loginButton.setEnabled(false);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService
+                (MainActivity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.no_internet_error),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            new UserAsyncTask(this).execute(usernameInput.getText().toString());
+            loginButton.setEnabled(false);
+        }
     }
 
 

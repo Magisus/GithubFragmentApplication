@@ -1,5 +1,7 @@
 package edu.lclark.githubfragmentapplication.fragments;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,13 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import edu.lclark.githubfragmentapplication.GithubRecyclerViewAdapter;
 import edu.lclark.githubfragmentapplication.FollowersAsyncTask;
+import edu.lclark.githubfragmentapplication.GithubRecyclerViewAdapter;
 import edu.lclark.githubfragmentapplication.R;
 import edu.lclark.githubfragmentapplication.activities.MainActivity;
 import edu.lclark.githubfragmentapplication.models.GithubUser;
@@ -39,7 +42,6 @@ public class MainActivityFragment extends Fragment implements FollowersAsyncTask
     private FollowerSelectedListener mListener;
 
     private String mUserLogin;
-
 
 
     public interface FollowerSelectedListener {
@@ -86,10 +88,18 @@ public class MainActivityFragment extends Fragment implements FollowersAsyncTask
     @Override
     public void onStart() {
         super.onStart();
-
-        if (mAsyncTask == null && (mFollowers == null || mFollowers.isEmpty())) {
-            mAsyncTask = new FollowersAsyncTask(this);
-            mAsyncTask.execute(mUserLogin);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+                .getSystemService
+                (MainActivity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.no_internet_error),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            if (mAsyncTask == null && (mFollowers == null || mFollowers.isEmpty())) {
+                mAsyncTask = new FollowersAsyncTask(this);
+                mAsyncTask.execute(mUserLogin);
+            }
         }
     }
 

@@ -9,4 +9,6 @@
     <string name="login_edit_text_hint">Username</string>
     <string name="login_button_text">Find user</string>
     <string name="login_fragment_title">Find a user</string>
+    <string name="no_internet_error">No internet connection!</string>
+    <string name="user_not_found_error">User not found</string>
 </resources>

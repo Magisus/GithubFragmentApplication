@@ -2,8 +2,10 @@ package edu.lclark.githubfragmentapplication;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,7 +70,12 @@ public class UserAsyncTask extends AsyncTask<String, Integer, GithubUser> {
                 }
             }
 
-            user = new Gson().fromJson(responseBuilder.toString(), GithubUser.class);
+            try {
+                user = new Gson().fromJson(responseBuilder.toString(), GithubUser.class);
+            } catch (JsonSyntaxException e) {
+                Log.d(TAG, "User not found.");
+                return null;
+            }
 
             if (isCancelled()) {
                 return null;
