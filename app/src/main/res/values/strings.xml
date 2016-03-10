@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="user_button_text">Followers</string>
+    <string name="user_button_text">Tabbed Followers</string>
 
     <string name="follower_list_title">%s\'s Followers</string>
     <string name="login_edit_text_hint">Username</string>
@@ -11,4 +11,6 @@
     <string name="login_fragment_title">Find a user</string>
     <string name="no_internet_error">No internet connection!</string>
     <string name="user_not_found_error">User not found</string>
+    <string name="title_activity_tabbed_followers">TabbedFollowersActivity</string>
+    <string name="tabbed_followers_activity_title">Followers</string>
 </resources>

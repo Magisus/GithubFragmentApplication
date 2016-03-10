@@ -2,6 +2,7 @@ package edu.lclark.githubfragmentapplication.fragments;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,16 @@ import edu.lclark.githubfragmentapplication.models.GithubUser;
  */
 public class SearchFragment extends Fragment implements UserAsyncTask.GithubUserListener {
 
+    private AsyncTask<String, Integer, GithubUser> userAsyncTask;
+
+    @Bind(R.id.username_edit_text)
+    EditText usernameInput;
+
+    @Bind(R.id.login_button)
+    Button loginButton;
+
+    UserFragment.UserListener listener;
+
     @Override
     public void onGithubUserRetrieved(GithubUser user) {
         if (user == null) {
@@ -39,14 +50,6 @@ public class SearchFragment extends Fragment implements UserAsyncTask.GithubUser
     public interface FindUserListener {
         public void showNewUser(GithubUser user);
     }
-
-    @Bind(R.id.username_edit_text)
-    EditText usernameInput;
-
-    @Bind(R.id.login_button)
-    Button loginButton;
-
-    UserFragment.UserListener listener;
 
     @Nullable
     @Override
@@ -63,6 +66,12 @@ public class SearchFragment extends Fragment implements UserAsyncTask.GithubUser
         return rootView;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        userAsyncTask.cancel(true);
+    }
+
     @OnClick(R.id.login_button)
     public void onFindUserClick() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService
@@ -72,7 +81,7 @@ public class SearchFragment extends Fragment implements UserAsyncTask.GithubUser
             Toast.makeText(getActivity(), getActivity().getString(R.string.no_internet_error),
                     Toast.LENGTH_SHORT).show();
         } else {
-            new UserAsyncTask(this).execute(usernameInput.getText().toString());
+            userAsyncTask = new UserAsyncTask(this).execute(usernameInput.getText().toString());
             loginButton.setEnabled(false);
         }
     }
